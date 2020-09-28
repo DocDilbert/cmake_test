@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "tchar.h"
 #include "getopt.h"
 
-int _tmain(int argc, TCHAR** argv)
+int wmain(int argc, wchar_t* argv[], wchar_t* envp[])
 {
     static int verbose_flag;
     int c;
@@ -12,18 +11,18 @@ int _tmain(int argc, TCHAR** argv)
     {
         static struct option long_options[] =
         {
-            {_T("verbose"), ARG_NONE, &verbose_flag, 1},
-            {_T("brief"),   ARG_NONE, &verbose_flag, 0},
-            {_T("add"),     ARG_NONE, 0, _T('a')},
-            {_T("append"),  ARG_NONE, 0, _T('b')},
-            {_T("delete"),  ARG_REQ,  0, _T('d')},
-            {_T("create"),  ARG_REQ,  0, _T('c')},
-            {_T("file"),    ARG_REQ, 0 , _T('f')},
+            {L"verbose", ARG_NONE, &verbose_flag, 1},
+            {L"brief",   ARG_NONE, &verbose_flag, 0},
+            {L"add",     ARG_NONE, 0, L'a'},
+            {L"append",  ARG_NONE, 0, L'b'},
+            {L"delete",  ARG_REQ,  0, L'd'},
+            {L"create",  ARG_REQ,  0, L'c'},
+            {L"file",    ARG_REQ, 0 , L'f'},
             { ARG_NULL , ARG_NULL , ARG_NULL , ARG_NULL }
         };
 
         int option_index = 0;
-        c = getopt_long(argc, argv, _T("abc:d:f:"), long_options, &option_index);
+        c = getopt_long(argc, argv, L"abc:d:f:", long_options, &option_index);
 
         // Check for end of operation or error
         if (c == -1)
@@ -36,30 +35,30 @@ int _tmain(int argc, TCHAR** argv)
             /* If this option set a flag, do nothing else now. */
             if (long_options[option_index].flag != 0)
                 break;
-            _tprintf(_T("option %s"), long_options[option_index].name);
+            wprintf(L"option %s", long_options[option_index].name);
             if (optarg)
-                _tprintf(_T(" with arg %s"), optarg);
-            _tprintf(_T("\n"));
+                wprintf(L" with arg %s", optarg);
+            wprintf(L"\n");
             break;
 
-        case _T('a'):
-            _tprintf(_T("option -a\n"));
+        case L'a':
+            wprintf(L"option -a\n");
             break;
 
-        case _T('b'):
-            _tprintf(_T("option -b\n"));
+        case L'b':
+            wprintf(L"option -b\n");
             break;
 
-        case _T('c'):
-            _tprintf(_T("option -c with value `%s'\n"), optarg);
+        case L'c':
+            wprintf(L"option -c with value `%s'\n", optarg);
             break;
 
-        case _T('d'):
-            _tprintf(_T("option -d with value `%s'\n"), optarg);
+        case L'd':
+            wprintf(L"option -d with value `%s'\n", optarg);
             break;
 
-        case _T('f'):
-            _tprintf(_T("option -f with value `%s'\n"), optarg);
+        case L'f':
+            wprintf(L"option -f with value `%s'\n", optarg);
             break;
 
         case '?':
@@ -72,14 +71,14 @@ int _tmain(int argc, TCHAR** argv)
     }
 
     if (verbose_flag)
-        _tprintf(_T("verbose flag is set\n"));
+        wprintf(L"verbose flag is set\n");
 
 
     if (optind < argc)
     {
-        _tprintf(_T("non-option ARGV-elements: "));
-        while (optind < argc) _tprintf(_T("%s "), argv[optind++]);
-        _tprintf(_T("\n"));
+        wprintf(L"non-option ARGV-elements: ");
+        while (optind < argc) wprintf(L"%s ", argv[optind++]);
+        wprintf(L"\n");
     }
     return 0;
 }

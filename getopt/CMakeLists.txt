@@ -1,2 +1,2 @@
-add_compile_definitions(STATIC_GETOPT)
-add_library(getopt getopt.c)
+add_compile_definitions(EXPORTS_GETOPT)
+add_library(getopt SHARED getopt.c)
