@@ -8,12 +8,12 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 find_package(Qt5 COMPONENTS Core Widgets Gui REQUIRED)
-
+find_package(Boost 1.74.0)
 # add the getopt library
 add_subdirectory(getopt)
 
 # add the executable
-add_executable(cmdtool WIN32
+add_executable(cmdtool
 	main.cc
     mainwindow.cpp
 	mainwindow.ui
@@ -23,6 +23,8 @@ add_executable(cmdtool WIN32
 # Link getopt  ... attention dll is needed
 target_link_libraries(cmdtool PUBLIC getopt )
 target_link_libraries(cmdtool PUBLIC Qt5::Widgets)
+
+target_include_directories(cmdtool PUBLIC ${Boost_INCLUDE_DIRS})
 
 # Add include directory
 target_include_directories(cmdtool PUBLIC

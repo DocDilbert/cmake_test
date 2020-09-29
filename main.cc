@@ -1,8 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "getopt.h"
-#include "mainwindow.h"
 #include <QApplication>
+#include <boost/lambda/lambda.hpp>
+#include <iostream>
+#include <iterator>
+#include <algorithm>
+#include <getopt.h>
+#include "mainwindow.h"
+
 
 int main(int argc, char* argv[]) 
 {
@@ -82,7 +87,14 @@ int main(int argc, char* argv[])
         while (optind < argc) printf("%s ", argv[optind++]);
         printf("\n");
     }
+  //  typedef std::istream_iterator<int> in;
 
+ //   std::cout << "Type in any number: ";
+
+   // std::for_each(
+    //    in(std::cin), in(), std::cout
+   //     << (boost::lambda::_1 * 10)
+  //      << "\nType in another number: ");
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
