@@ -8,9 +8,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 find_package(Qt5 COMPONENTS Core Widgets Gui REQUIRED)
-find_package(Boost 1.74.0)
-# add the getopt library
-add_subdirectory(getopt)
+find_package(Boost 1.73.0)
 
 # add the executable
 add_executable(cmdtool
@@ -21,7 +19,13 @@ add_executable(cmdtool
 )
 
 # Link getopt  ... attention dll is needed
-target_link_libraries(cmdtool PUBLIC getopt )
+
+find_path(GETOPT_INCLUDE_DIR getopt.h)
+find_library(GETOPT_LIB getopt)
+find_program(GETOPT_DLL getopt.dll)
+include_directories(cmdtool ${GETOPT_INCLUDE_DIR})
+
+target_link_libraries(cmdtool PUBLIC ${GETOPT_LIB} )
 target_link_libraries(cmdtool PUBLIC Qt5::Widgets)
 
 target_include_directories(cmdtool PUBLIC ${Boost_INCLUDE_DIRS})
@@ -35,7 +39,7 @@ target_include_directories(cmdtool PUBLIC
 # Copy getopt dll to build folder						  
 add_custom_command(TARGET cmdtool POST_BUILD       	# Adds a post-build event to cmdtool
     COMMAND ${CMAKE_COMMAND} -E copy_if_different  	# which executes "cmake - E copy_if_different..."
-        $<TARGET_FILE:getopt>                       # <--this is in-file
+        ${GETOPT_DLL}                       # <--this is in-file
         $<TARGET_FILE_DIR:cmdtool>)                 # <--this is out-file path
 
 # Copy qt widgets dll to build folder
